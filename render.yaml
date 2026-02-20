@@ -6,3 +6,4 @@ services:
     healthCheckPath: /test
     # Optional: uncomment to use a different branch
     # branch: main
+    plan: free
