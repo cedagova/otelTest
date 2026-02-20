@@ -1,0 +1,19 @@
+# Python
+.venv
+venv
+__pycache__
+*.py[cod]
+*.pyo
+.pytest_cache
+.mypy_cache
+*.egg-info
+dist
+build
+
+# Env
+.env
+.env.local
+
+# IDE / OS
+.cursor
+.DS_Store

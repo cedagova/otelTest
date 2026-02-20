@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "oteltest"
+version = "0.1.0"
+description = "FastAPI app with /test and /traces endpoints"
+authors = []
+readme = "README.md"
+packages = [{ include = "*.py" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = ">=0.115.0"
+uvicorn = { extras = ["standard"], version = ">=0.32.0" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
