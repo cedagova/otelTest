@@ -1,7 +1,17 @@
 from fastapi import FastAPI
+from fastapi import FastAPI
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+
+from otel import setup_otel
+
+setup_otel()
 
 app = FastAPI(title="otelTest API")
 
+# auto-instrument incoming requests + outgoing requests
+FastAPIInstrumentor.instrument_app(app)
+RequestsInstrumentor().instrument()
 
 @app.get("/healthz")
 def healthz():
@@ -18,4 +28,5 @@ def traces():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
