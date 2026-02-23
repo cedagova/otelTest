@@ -9,12 +9,13 @@ setup_otel()
 app = FastAPI(title="otelTest API")
 
 # auto-instrument incoming requests + outgoing requests
-FastAPIInstrumentor.instrument_app(app, excluded_urls=r"^/health/?$")
+# excluded_urls is matched against the full URL (e.g. http://host:port/health), not just the path
+FastAPIInstrumentor.instrument_app(app, excluded_urls=r".*/health/?$")
 RequestsInstrumentor().instrument()
 
 
 @app.get("/health")
-def healthz():
+def health():
     """Check that the API is up."""
     return {"status": "ok", "message": "API is up"}
 
