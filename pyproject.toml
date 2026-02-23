@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "FastAPI app with /test and /traces endpoints"
 authors = []
 readme = "README.md"
-packages = [{ include = "*.py" }]
+packages = [{ include = "oteltest" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"

@@ -11,6 +11,7 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-dev --no-interaction --no-ansi
 
 COPY main.py .
+COPY oteltest ./oteltest
 
 # Render sets PORT at runtime (e.g. 10000); default 8000 for local
 ENV PORT=8000

@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
-from otel import setup_otel
+from oteltest.otel import setup_otel
 
 setup_otel()
 
