@@ -2,8 +2,5 @@ services:
   - type: web
     runtime: docker
     name: otelTest-api
-    # Uses the repo that contains this Blueprint when connected in Render Dashboard
-    healthCheckPath: /test
-    # Optional: uncomment to use a different branch
-    # branch: main
+    healthCheckPath: /healthz
     plan: free

@@ -3,8 +3,8 @@ from fastapi import FastAPI
 app = FastAPI(title="otelTest API")
 
 
-@app.get("/test")
-def test():
+@app.get("/healthz")
+def healthz():
     """Check that the API is up."""
     return {"status": "ok", "message": "API is up"}
 
