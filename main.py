@@ -1,10 +1,13 @@
 from fastapi import FastAPI
+from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 from oteltest.otel import setup_otel
 
 setup_otel()
+
+tracer = trace.get_tracer(__name__, "1.0.0")
 
 app = FastAPI(title="otelTest API")
 
@@ -22,9 +25,11 @@ def health():
 
 @app.get("/traces")
 def traces():
-    """Traces endpoint — logic to be defined later."""
-    # TODO: add traces logic
-    return {"traces": []}
+    """Run a mocked process (network, db, business logic) and emit a trace for telemetry."""
+    from oteltest.mocked_process import run_mocked_process
+
+    run_mocked_process(tracer)
+    return {"status": "ok", "message": "Mocked process completed; check your telemetry backend for the trace."}
 
 
 if __name__ == "__main__":
