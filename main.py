@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -5,6 +7,10 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 from oteltest.otel import setup_otel
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s %(name)s: %(message)s",
+)
 setup_otel()
 
 tracer = trace.get_tracer(__name__, "1.0.0")
