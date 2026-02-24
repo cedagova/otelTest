@@ -9,7 +9,7 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 
 def setup_otel() -> None:
     service_name = os.getenv("OTEL_SERVICE_NAME", "otelTest-api")
-    endpoint = os.environ["SIGNOZ_OTLP_ENDPOINT"]
+    endpoint = os.getenv("SIGNOZ_OTLP_ENDPOINT")
 
     resource = Resource.create(
         {
