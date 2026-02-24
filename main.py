@@ -1,6 +1,9 @@
 import logging
+import os
+import httpx
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
 from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
@@ -36,6 +39,39 @@ def traces():
 
     run_mocked_process(tracer)
     return {"status": "ok", "message": "Mocked process completed; check your telemetry backend for the trace."}
+
+MAX_BODY = 2 * 1024 * 1024  # 2MB
+
+
+@app.options("/v1/traces")
+async def traces_preflight():
+    return Response(status_code=204)
+
+
+@app.post("/v1/traces")
+async def receive_traces(request: Request):
+    endpoint = os.getenv("OTEL_COLLECTOR_ENDPOINT")
+    if not endpoint:
+        raise RuntimeError("OTEL_COLLECTOR_ENDPOINT not set")
+
+    body = await request.body()
+    if len(body) > MAX_BODY:
+        return JSONResponse(status_code=413, content={"error": "payload too large"})
+
+    content_type = request.headers.get("content-type", "application/x-protobuf")
+    forward_url = f"{endpoint.rstrip('/')}/v1/traces"
+
+    try:
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.post(
+                forward_url,
+                content=body,
+                headers={"Content-Type": content_type},
+            )
+        return Response(status_code=r.status_code)
+    except Exception:
+        logging.getLogger(__name__).exception("Failed to forward traces")
+        return JSONResponse(status_code=502, content={"error": "forward failed"})
 
 
 if __name__ == "__main__":

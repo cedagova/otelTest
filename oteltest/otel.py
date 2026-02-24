@@ -15,14 +15,6 @@ def setup_otel() -> None:
     service_name = os.getenv("OTEL_SERVICE_NAME")
     endpoint = os.getenv("OTEL_COLLECTOR_ENDPOINT")
 
-    logger.info(
-        "OpenTelemetry configuration:\n"
-        "  service_name: %s\n"
-        "  endpoint: %s",
-        service_name,
-        endpoint,
-    )
-
     resource = Resource.create(
         {
             "service.name": service_name,
