@@ -1,4 +1,5 @@
 import os
+import logging
 
 from opentelemetry import trace
 from opentelemetry.sdk.resources import Resource
@@ -7,9 +8,20 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 
 
+logger = logging.getLogger(__name__)
+
+
 def setup_otel() -> None:
-    service_name = os.getenv("OTEL_SERVICE_NAME", "otelTest-api")
-    endpoint = os.getenv("SIGNOZ_OTLP_ENDPOINT")
+    service_name = os.getenv("OTEL_SERVICE_NAME")
+    endpoint = os.getenv("OTEL_COLLECTOR_ENDPOINT")
+
+    logger.info(
+        "OpenTelemetry configuration:\n"
+        "  service_name: %s\n"
+        "  endpoint: %s",
+        service_name,
+        endpoint,
+    )
 
     resource = Resource.create(
         {
