@@ -14,7 +14,7 @@ app = FastAPI(title="otelTest API")
 # auto-instrument incoming requests + outgoing requests
 # excluded_urls is matched against the full URL (e.g. http://host:port/health), not just the path
 FastAPIInstrumentor.instrument_app(app, excluded_urls=r".*/health/?$")
-# RequestsInstrumentor().instrument()
+RequestsInstrumentor().instrument()
 
 
 @app.get("/health")

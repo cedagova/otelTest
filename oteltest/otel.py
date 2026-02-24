@@ -8,9 +8,8 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 
 
 def setup_otel() -> None:
-    service_name = os.getenv("OTEL_SERVICE_NAME", "fastapi-direct-signoz")
+    service_name = os.getenv("OTEL_SERVICE_NAME", "otelTest-api")
     endpoint = os.environ["SIGNOZ_OTLP_ENDPOINT"]
-    ingestion_key = os.environ["SIGNOZ_INGESTION_KEY"]
 
     resource = Resource.create(
         {
@@ -25,7 +24,6 @@ def setup_otel() -> None:
 
     exporter = OTLPSpanExporter(
         endpoint=f"{endpoint}/v1/traces",
-        headers={"signoz-ingestion-key": ingestion_key},
         timeout=10,
     )
     provider.add_span_processor(BatchSpanProcessor(exporter))
