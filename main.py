@@ -3,6 +3,7 @@ import os
 import httpx
 
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -19,6 +20,13 @@ setup_otel()
 tracer = trace.get_tracer(__name__, "1.0.0")
 
 app = FastAPI(title="otelTest API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://chunipers.com","https://www.chunipers.com"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # auto-instrument incoming requests + outgoing requests
 # excluded_urls is matched against the full URL (e.g. http://host:port/health), not just the path
