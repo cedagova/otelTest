@@ -26,6 +26,7 @@ app.add_middleware(
     allow_origins=["https://chunipers.com","https://www.chunipers.com"],
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
 # auto-instrument incoming requests + outgoing requests
